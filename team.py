@@ -1,8 +1,11 @@
 from lxml import html
 import time
 import urllib2
+from team_names import *
 
-team_acr = ["crd", "atl", "rav", "buf", "car", "chi", "cin", "cle", "dal", "den", "det", "gnb", "htx", "clt", "jax", "kan", "mia", "min", "nwe", "nor", "nyg", "nyj", "rai", "phi", "pit", "sdg", "sfo", "sea", "ram", "tam", "oti", "was"]
+def get_team(data_set,team,year):
+    team_data = data_set.find_one({'team':team,'year':year})
+    return Season(team,year,team_data)
 
 class Team():
     stat_table = ["Week","Day","Date","Link","Win_loss","OT","Rec","At","Opp","Tm_score","Opp_score","O1stD","OTotYd","OPassY","ORushY","OTO","D1stD","DTotYd","DPassY","DRushY","DTO","Offense","Defense","Sp Tms"]
@@ -35,18 +38,22 @@ class Season():
         iter_data.append('SuperBowl')
         return iter(iter_data)
 
-    def cur_record(self,week_num):
-        """ calculates the teams record up at that week """
+    def cur_stats(self,week_num):
+        """ calculates the teams stats up at that week """
         temp_season = {}
+        weeks = 0
         for stat in self.numeric_stats:
             temp_season[stat] = 0
         for x in range(1,week_num+1):
             week = self.get_week(x)
             if(bool(week)):
+                weeks = weeks + 1
                 for stat in self.numeric_stats:
-                    temp_season[stat] += week[stat]/week_num
+                    temp_season[stat] += float(week[stat])
+        for stat in temp_season:
+            temp_season[stat] = float(temp_season[stat])/float(weeks)
 
-
+        return temp_season
 
     def reg_season(self):
         """ Iterator for just the regular season games """

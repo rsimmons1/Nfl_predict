@@ -29,8 +29,8 @@ if __name__ == '__main__':
         team = 'den'
         year = str(cur_year)
 
-        stat1 = 'DRushY'
-        stat2 = 'DPassY'
+        stat1 = 'OPassY'
+        stat2 = 'Tm_score'
 
 
         for team in ['den']:
@@ -58,40 +58,40 @@ if __name__ == '__main__':
 
 
 
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
-import itertools
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
-from mlxtend.classifier import EnsembleVoteClassifier
-from mlxtend.data import iris_data
-from mlxtend.evaluate import plot_decision_regions
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import matplotlib.gridspec as gridspec
+    import itertools
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.svm import SVC
+    from sklearn.ensemble import RandomForestClassifier
+    from mlxtend.classifier import EnsembleVoteClassifier
+    from mlxtend.data import iris_data
+    from mlxtend.evaluate import plot_decision_regions
 
-# Initializing Classifiers
-clf1 = LogisticRegression(random_state=0)
-clf2 = RandomForestClassifier(random_state=0)
-clf3 = SVC(random_state=0, probability=True)
-eclf = EnsembleVoteClassifier(clfs=[clf1, clf2, clf3], weights=[2, 1, 1], voting='soft')
+    # Initializing Classifiers
+    clf1 = LogisticRegression(random_state=0)
+    clf2 = RandomForestClassifier(random_state=0)
+    clf3 = SVC(random_state=0, probability=True)
+    eclf = EnsembleVoteClassifier(clfs=[clf1, clf2, clf3], weights=[2, 1, 1], voting='soft')
 
-# Loading some example data
-X = np.array(input_data)
-y = np.array(result)
-# X = np.array(input_data)
-# y = np.array(result)
+    # Loading some example data
+    X = np.array(input_data)
+    y = np.array(result)
+    # X = np.array(input_data)
+    # y = np.array(result)
 
-# Plotting Decision Regions
-# gs = gridspec.GridSpec(1)
-fig = plt.figure(figsize=(10, 8))
-lab = 'RBF kernel SVM'
-clf = clf3
-clf.fit(X, y)
-ax = plt.subplot(1,1,1)
-fig = plot_decision_regions(X=X, y=y, clf=clf, legend=2)
-plt.title( '{} {}-{}'.format(team.upper(),start_year,end_year-1) )
-plt.xlabel(stat1)
-plt.ylabel(stat2)
-plt.ylim(ymin=0)
-plt.xlim(xmin=0)
-plt.show()
+    # Plotting Decision Regions
+    # gs = gridspec.GridSpec(1)
+    fig = plt.figure(figsize=(10, 8))
+    lab = 'RBF kernel SVM'
+    clf = clf3
+    clf.fit(X, y)
+    ax = plt.subplot(1,1,1)
+    fig = plot_decision_regions(X=X, y=y, clf=clf, legend=2)
+    plt.title( '{} {}-{}'.format(team.upper(),start_year,end_year-1) )
+    plt.xlabel(stat1)
+    plt.ylabel(stat2)
+    plt.ylim(ymin=0)
+    plt.xlim(xmin=0)
+    plt.show()

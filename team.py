@@ -2,6 +2,7 @@ from lxml import html
 import time
 import urllib2
 from team_names import *
+import statistics as st
 
 def get_team(data_set,team,year):
     team_data = data_set.find_one({'team':team,'year':year})
@@ -43,16 +44,21 @@ class Season():
         temp_season = {}
         weeks = 0
         for stat in self.numeric_stats:
-            temp_season[stat] = 0
+            temp_season[stat] = []
+
         for x in range(1,week_num+1):
             week = self.get_week(x)
             if(bool(week)):
                 weeks = weeks + 1
                 for stat in self.numeric_stats:
-                    temp_season[stat] += float(week[stat])
-        for stat in temp_season:
-            temp_season[stat] = float(temp_season[stat])/float(weeks)
+                    temp_season[stat].append(week[stat])
 
+        for stat in temp_season:
+            temp_season[stat] = st.mean(temp_season[stat])
+        if(bool(self.get_week(week_num))):
+            temp_season['Wins'] = int(self.get_week(week_num)['Rec'][0])
+        else:
+            temp_season['Wins'] = int(self.get_week(week_num-1)['Rec'][0])
         return temp_season
 
     def reg_season(self):
